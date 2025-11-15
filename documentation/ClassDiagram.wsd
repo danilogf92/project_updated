@@ -1,0 +1,88 @@
+@startuml ProjectManagementSystem
+
+class User {
+    +String name
+    +String email
+    +String password
+    +Boolean is_admin
+    +Boolean active
+    +DateTime email_verified_at
+    +String two_factor_secret
+    +String two_factor_recovery_codes
+    +String remember_token
+    +String initials()
+}
+
+class Company {
+    +String name
+    +String slug
+    +String description
+    +String code
+    +Boolean active
+    +DateTime created_at
+    +DateTime updated_at
+    +projects() : HasMany
+    +users() : HasMany
+}
+
+class Project {
+    +String name
+    +String pda_code
+    +Float rate
+    +String state
+    +String investments
+    +String justification
+    +String classification_of_investments
+    +Boolean data_uploaded
+    +Date quartile_date
+    +Date start_date
+    +Date finish_date
+    +String file_name
+    +Boolean upload_pda
+    +Array getEnumOptions()
+    +Query search()
+    +data() : HasMany
+    +company() : BelongsTo
+}
+
+class Data {
+    +String area
+    +String project_id
+    +String group_1
+    +String group_2
+    +String description
+    +String general_classification
+    +String item_type
+    +String unit
+    +Decimal qty
+    +Decimal unit_price
+    +Decimal global_price
+    +String stage
+    +Decimal real_value
+    +Decimal committed
+    +Decimal percentage
+    +Decimal executed_dollars
+    +Decimal executed_euros
+    +String supplier
+    +String code
+    +String order_no
+    +String input_num
+    +String observations
+    +Decimal booked
+    +Decimal global_price_euros
+    +Decimal real_value_euros
+    +Decimal booked_euros
+    +Array getColumnNames()
+    +project() : BelongsTo
+}
+
+User --> Company : belongsTo
+Company --> User : hasMany
+
+Company --> Project : hasMany
+Project --> Company : belongsTo
+
+Project --> Data : hasMany
+Data --> Project : belongsTo
+
+@enduml
