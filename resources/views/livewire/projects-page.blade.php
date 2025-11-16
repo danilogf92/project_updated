@@ -76,25 +76,19 @@
                     </select>
 
                     <!-- Clear Filters Button -->
-                    <button wire:click="clearFilters" x-data
-                        @click="
-        const el = $el;
-        setTimeout(() => el.blur(), 2000);
-    "
+                    <button wire:click="clearFilters"
                         class="cursor-pointer inline-flex items-center gap-2 rounded-lg 
-           border border-yellow-500 bg-yellow-400 
-           px-4 py-2 text-sm font-medium text-gray-800 
-           shadow-sm transition-all duration-200 
-           hover:bg-yellow-300 hover:shadow-md 
-           focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2">
+                           border border-yellow-500 bg-yellow-400 
+                           px-4 py-2 text-sm font-medium text-gray-800 
+                           shadow-sm transition-all duration-200 
+                           hover:bg-yellow-300 hover:shadow-md 
+                           focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2">
                         <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M6 18L18 6M6 6l12 12"></path>
                         </svg>
                         Clear
                     </button>
-
-
                 </div>
             </div>
         </div>
@@ -123,8 +117,8 @@
         @if ($projects->count() > 0)
             <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
                 @foreach ($projects as $project)
-                    <div
-                        class="overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm transition-all duration-200 hover:shadow-md">
+                    <div class="overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm transition-all duration-200 hover:shadow-md"
+                        wire:key="project-{{ $project->id }}">
                         <!-- Header -->
                         <div class="border-b border-gray-100 bg-gray-50 px-4 py-3">
                             <div class="flex items-start justify-between">
@@ -230,15 +224,53 @@
                         <!-- Footer -->
                         <div class="border-t border-gray-100 bg-gray-50 px-4 py-3">
                             <div class="flex items-center justify-between">
+
+                                <!-- Fecha -->
                                 <span class="text-xs text-gray-500">
                                     Created: {{ $project->created_at->format('m/d/Y') }}
                                 </span>
-                                <button
-                                    class="rounded-md bg-blue-600 px-3 py-1.5 text-xs font-medium text-white transition-colors hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
-                                    View Details
-                                </button>
+
+                                <!-- Botones -->
+                                <div class="flex items-center space-x-2">
+
+                                    <!-- Details (AZUL) -->
+                                    <a href="{{ route('project.details', $project->id) }}"
+                                        class="inline-flex items-center rounded-md bg-blue-600 px-2.5 py-1.5 text-xs font-semibold text-white shadow-sm transition-all hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">
+                                        <svg class="-ml-0.5 mr-1 h-4 w-4" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                        </svg>
+                                        Details
+                                    </a>
+
+                                    <!-- Dashboard (VERDE) -->
+                                    <a href="{{ route('project.details', $project->id) }}"
+                                        class="inline-flex items-center rounded-md bg-green-600 px-2.5 py-1.5 text-xs font-semibold text-white shadow-sm transition-all hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600">
+                                        <svg class="-ml-0.5 mr-1 h-4 w-4" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M3 12h6V3H3v9zm0 9h6v-7H3v7zm8 0h10V11H11v10zm0-12h10V3H11v6z" />
+                                        </svg>
+                                        Dashboard
+                                    </a>
+
+                                    <!-- Tasks (ÁMBAR / AMARILLO) -->
+                                    <a href="{{ route('project.details', $project->id) }}"
+                                        class="inline-flex items-center rounded-md bg-amber-500 px-2.5 py-1.5 text-xs font-semibold text-white shadow-sm transition-all hover:bg-amber-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-600">
+                                        <svg class="-ml-0.5 mr-1 h-4 w-4" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M9 6h11M9 12h11M9 18h11M4 6h.01M4 12h.01M4 18h.01" />
+                                        </svg>
+                                        Tasks
+                                    </a>
+
+                                </div>
                             </div>
                         </div>
+
+
                     </div>
                 @endforeach
             </div>
@@ -263,7 +295,7 @@
                         There are no projects registered in the system
                     @endif
                 </p>
-                <div class="mt-6">
+                {{-- <div class="mt-6">
                     <button
                         class="inline-flex items-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">
                         <svg class="-ml-0.5 mr-1.5 h-5 w-5" fill="none" stroke="currentColor"
@@ -273,7 +305,7 @@
                         </svg>
                         Create Project
                     </button>
-                </div>
+                </div> --}}
             </div>
         @endif
     </div>

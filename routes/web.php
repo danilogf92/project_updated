@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\DashboardController;
+use App\Livewire\ProjectDetails;
 use App\Livewire\ProjectsPage;
 use App\Livewire\Settings\Appearance;
 use App\Livewire\Settings\Password;
@@ -12,9 +14,14 @@ Route::get('/', function () {
     return view('welcome');
 })->name('home');
 
-Route::view('dashboard', 'dashboard')
+// Route::view('dashboard', 'dashboard')
+//     ->middleware(['auth', 'verified'])
+//     ->name('dashboard');
+
+Route::get('/dashboard', [DashboardController::class, 'index'])
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
+
 
 // Route::view('projects', 'projects')
 //     ->middleware(['auth', 'verified'])
@@ -38,6 +45,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('settings/appearance', Appearance::class)->name('appearance.edit');
 
     Route::get('/projects', ProjectsPage::class)->name('projects');
+    Route::get('/projects/{projectId}', ProjectDetails::class)->name('project.details');
 
 
     Route::get('settings/two-factor', TwoFactor::class)
