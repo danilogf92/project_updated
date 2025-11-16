@@ -28,7 +28,10 @@ class Project extends Model
 
     protected $casts = [
         'rate' => 'float',
+        'start_date' => 'datetime',
+        'finish_date' => 'datetime',
     ];
+
 
     protected $enumFields = [
         'state' => ['Capex', 'Planification', 'Execution', 'Finished'],
